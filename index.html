@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#FAF7F1">
+<title>Minh Anh &amp; Quốc Huy — Thiệp cưới</title>
+<meta name="description" content="Trân trọng kính mời bạn đến chung vui cùng chúng mình.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..700,0..100,0..1;1,9..144,300..700,0..100,0..1&family=Inter:wght@300..600&display=swap">
+<link rel="stylesheet" href="assets/css/styles.css">
+
+<!-- themes.js nạp SỚM (không defer) rồi áp ngay theme đã lưu, để trang không
+     bị "nháy" từ màu mặc định sang màu người dùng đã chọn lần trước. -->
+<script src="assets/js/themes.js"></script>
+<script>
+  try {
+    var savedTheme = localStorage.getItem('wedding-theme');
+    var themeDef = (typeof WEDDING_THEMES !== 'undefined' && WEDDING_THEMES[savedTheme]) || null;
+    if (themeDef) {
+      for (var k in themeDef.tokens) document.documentElement.style.setProperty(k, themeDef.tokens[k]);
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+  } catch (e) { /* trình duyệt chặn localStorage → dùng theme mặc định */ }
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main" data-i18n="ui.skipToContent">Bỏ qua, tới nội dung chính</a>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     KHO HÌNH SVG VẼ TAY — dùng lại qua <use href="#id">
+     Tất cả đều là path bezier tự vẽ, không phải clipart.
+     ═══════════════════════════════════════════════════════════════════ -->
+<svg class="svg-store" aria-hidden="true" focusable="false">
+  <defs>
+
+    <!-- Một chiếc lá đơn: gốc ở (0,0), mũi lá hướng sang phải -->
+    <symbol id="ic-leaf" viewBox="0 0 48 26">
+      <path d="M1 13C14 -1 34 -3 47 13 34 29 14 27 1 13Z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+      <path d="M1 13H47" fill="none" stroke="currentColor" stroke-width="1" opacity=".55"/>
+      <path d="M13 7.5 19 13M22 5.2 27 13M31 5.6 35.5 13M13 18.5 19 13M22 20.8 27 13M31 20.4 35.5 13" fill="none" stroke="currentColor" stroke-width=".75" opacity=".38"/>
+    </symbol>
+
+    <!-- Cành lá trang trí góc ảnh hero (7 lá + 2 nụ, bố cục bất đối xứng) -->
+    <symbol id="ic-sprig" viewBox="0 0 210 270">
+      <path d="M14 264C44 208 60 160 74 112 84 76 98 42 126 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      <g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round">
+        <path d="M70 128C82 116 100 116 112 126 100 138 82 140 70 128Z"/>
+        <path d="M66 136C54 126 52 108 60 96 72 106 76 124 66 136Z"/>
+        <path d="M83 92C96 81 114 82 125 92 113 104 95 104 83 92Z"/>
+        <path d="M79 100C68 89 67 71 76 60 87 71 89 89 79 100Z"/>
+        <path d="M99 56C112 46 129 48 139 59 126 70 109 68 99 56Z"/>
+        <path d="M96 64C86 52 87 34 97 24 106 36 105 54 96 64Z"/>
+        <path d="M117 22C129 14 144 17 152 27 140 36 125 33 117 22Z"/>
+      </g>
+      <g fill="currentColor" opacity=".16">
+        <path d="M70 128C82 116 100 116 112 126 100 138 82 140 70 128Z"/>
+        <path d="M83 92C96 81 114 82 125 92 113 104 95 104 83 92Z"/>
+        <path d="M96 64C86 52 87 34 97 24 106 36 105 54 96 64Z"/>
+      </g>
+      <circle cx="131" cy="7" r="3.1" fill="none" stroke="currentColor" stroke-width="1.1"/>
+      <circle cx="141" cy="14" r="2.2" fill="none" stroke="currentColor" stroke-width="1.1"/>
+    </symbol>
+
+    <!-- Dấu phân cách: hai lá nhỏ chụm vào một chấm -->
+    <symbol id="ic-divider" viewBox="0 0 72 18">
+      <path d="M0 9h22M50 9h22" stroke="currentColor" stroke-width="1" opacity=".5"/>
+      <path d="M28 9C31 4 34 3 36 3 36 6 34 8.5 28 9ZM44 9C41 4 38 3 36 3 36 6 38 8.5 44 9ZM28 9C31 14 34 15 36 15 36 12 34 9.5 28 9ZM44 9C41 14 38 15 36 15 36 12 38 9.5 44 9Z"
+            fill="none" stroke="currentColor" stroke-width="1.05" stroke-linejoin="round"/>
+    </symbol>
+
+    <!-- Ghim bản đồ -->
+    <symbol id="ic-pin" viewBox="0 0 20 20">
+      <path d="M10 18s6-6.1 6-10.3A6 6 0 0 0 4 7.7C4 11.9 10 18 10 18Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+      <circle cx="10" cy="7.6" r="2.1" fill="none" stroke="currentColor" stroke-width="1.4"/>
+    </symbol>
+
+    <!-- Biểu tượng sao chép -->
+    <symbol id="ic-copy" viewBox="0 0 20 20">
+      <rect x="7" y="7" width="10" height="11" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <path d="M13 4.6A1.6 1.6 0 0 0 11.4 3H4.6A1.6 1.6 0 0 0 3 4.6v6.8A1.6 1.6 0 0 0 4.6 13" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </symbol>
+
+    <!-- Dấu tích (sau khi sao chép thành công) -->
+    <symbol id="ic-check" viewBox="0 0 20 20">
+      <path d="m4 10.6 4.1 4.1L16 5.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+
+    <!-- Nốt nhạc (nút mở trình phát) -->
+    <symbol id="ic-music" viewBox="0 0 24 24">
+      <path d="M9 18V5.6l10-2v12.2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <ellipse cx="6.9" cy="18" rx="2.6" ry="2.2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <ellipse cx="16.9" cy="15.8" rx="2.6" ry="2.2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    </symbol>
+    <symbol id="ic-volume" viewBox="0 0 24 24">
+      <path d="M4 9.5h3.4L12 5.4v13.2L7.4 14.5H4Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M15.4 9.4a3.7 3.7 0 0 1 0 5.2M18 6.8a7.4 7.4 0 0 1 0 10.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="ic-volume-off" viewBox="0 0 24 24">
+      <path d="M4 9.5h3.4L12 5.4v13.2L7.4 14.5H4Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="m16 9.6 4.4 4.8M20.4 9.6 16 14.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="ic-skip" viewBox="0 0 24 24">
+      <path d="M17 6.4v11.2M16 12 7.6 6.6v10.8Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+    </symbol>
+
+    <!-- Dấu X đóng khung xem ảnh -->
+    <symbol id="ic-close" viewBox="0 0 24 24">
+      <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </symbol>
+
+    <!-- Mũi tên điều hướng slide (dùng chung, lật bằng CSS) -->
+    <symbol id="ic-chevron" viewBox="0 0 24 24">
+      <path d="M15 5 8.5 12l6.5 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+
+    <!-- Tạm dừng / phát (dùng cho nút tự chuyển ảnh) -->
+    <symbol id="ic-pause" viewBox="0 0 24 24">
+      <path d="M9.5 6v12M14.5 6v12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="ic-play" viewBox="0 0 24 24">
+      <path d="M8.5 5.8v12.4L19 12Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+    </symbol>
+
+    <!-- Mũi tên chỉ xuống ở hero -->
+    <symbol id="ic-arrow-down" viewBox="0 0 12 30">
+      <path d="M6 0v26M1.5 21 6 28l4.5-7" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+
+    <!-- Khung QR placeholder (4 góc + hoạ tiết mờ ở giữa) -->
+    <symbol id="ic-qr-frame" viewBox="0 0 120 120">
+      <g fill="none" stroke="currentColor" stroke-width="1.4">
+        <path d="M2 26V6a4 4 0 0 1 4-4h20M94 2h20a4 4 0 0 1 4 4v20M118 94v20a4 4 0 0 1-4 4H94M26 118H6a4 4 0 0 1-4-4V94"/>
+      </g>
+      <g fill="currentColor" opacity=".14">
+        <rect x="26" y="26" width="20" height="20" rx="2"/><rect x="74" y="26" width="20" height="20" rx="2"/>
+        <rect x="26" y="74" width="20" height="20" rx="2"/><rect x="54" y="54" width="12" height="12" rx="2"/>
+        <rect x="74" y="78" width="8" height="8" rx="1"/><rect x="86" y="90" width="8" height="8" rx="1"/>
+        <rect x="62" y="86" width="8" height="8" rx="1"/>
+      </g>
+    </symbol>
+
+  </defs>
+</svg>
+
+
+<!-- ═══════════════════════════════════════════════════ 01. THANH ĐIỀU HƯỚNG -->
+<header class="nav" id="siteHeader">
+  <div class="nav__inner">
+
+    <a class="nav__brand" href="#top">
+      <span class="nav__monogram" data-bind="couple.bride.initial">M</span>
+      <svg class="nav__brand-leaf" aria-hidden="true"><use href="#ic-leaf"/></svg>
+      <span class="nav__monogram" data-bind="couple.groom.initial">H</span>
+    </a>
+
+    <nav class="nav__nav" id="siteNav" aria-label="Menu chính">
+      <ul class="nav__list" id="navList"><!-- render.js đổ dữ liệu --></ul>
+    </nav>
+
+    <div class="nav__tools">
+
+      <div class="theme-picker">
+        <button type="button" class="theme-picker__btn" id="themeBtn"
+                aria-expanded="false" aria-controls="themePanel" aria-label="Đổi bảng màu">
+          <span class="theme-picker__dots" id="themeBtnDots" aria-hidden="true"><i></i><i></i><i></i></span>
+        </button>
+        <div class="theme-picker__panel" id="themePanel" role="group" aria-labelledby="themeBtn" hidden>
+          <p class="theme-picker__title" data-i18n="ui.themeTitle">Bảng màu</p>
+          <ul class="theme-picker__list" id="themeList"></ul>
+        </div>
+      </div>
+
+      <button type="button" class="lang-toggle" id="langToggle" aria-label="Chuyển sang tiếng Anh">
+        <span class="lang-toggle__opt" data-lang-opt="vi">VI</span>
+        <span class="lang-toggle__sep" aria-hidden="true"></span>
+        <span class="lang-toggle__opt" data-lang-opt="en">EN</span>
+      </button>
+
+      <button type="button" class="nav__burger" id="navBurger"
+              aria-expanded="false" aria-controls="siteNav" aria-label="Mở menu">
+        <span class="nav__burger-bar"></span>
+        <span class="nav__burger-bar"></span>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+
+<main id="main">
+
+<!-- ══════════════════════════════════════════════════════════════ 02. HERO -->
+<section class="hero" id="top">
+
+  <div class="hero__text">
+    <p class="eyebrow" data-reveal data-i18n="hero.eyebrow">Save the date</p>
+
+    <h1 class="hero__names" data-reveal>
+      <span class="hero__name" data-bind="couple.bride.name">Nguyễn Minh Anh</span>
+      <span class="hero__amp" aria-hidden="true">&amp;</span>
+      <span class="hero__name" data-bind="couple.groom.name">Trần Quốc Huy</span>
+    </h1>
+
+    <p class="hero__invite" data-reveal data-i18n="hero.invite">Chúng mình sắp về chung một nhà</p>
+
+    <p class="hero__date" data-reveal>
+      <span data-i18n="wedding.weekday">Thứ Bảy</span>
+      <span class="hero__date-dot" aria-hidden="true"></span>
+      <span data-i18n="wedding.dateDisplay">20 tháng 12, 2025</span>
+      <span class="hero__date-dot" aria-hidden="true"></span>
+      <span data-i18n="wedding.city">TP. Hồ Chí Minh</span>
+    </p>
+
+    <!-- Đồng hồ đếm ngược — main.js cập nhật mỗi giây -->
+    <div class="countdown" id="countdown" data-reveal>
+      <div class="countdown__grid" id="countdownGrid">
+        <div class="countdown__unit"><span class="countdown__num" data-cd="days">--</span><span class="countdown__label" data-i18n="countdown.days">Ngày</span></div>
+        <div class="countdown__unit"><span class="countdown__num" data-cd="hours">--</span><span class="countdown__label" data-i18n="countdown.hours">Giờ</span></div>
+        <div class="countdown__unit"><span class="countdown__num" data-cd="minutes">--</span><span class="countdown__label" data-i18n="countdown.minutes">Phút</span></div>
+        <div class="countdown__unit"><span class="countdown__num" data-cd="seconds">--</span><span class="countdown__label" data-i18n="countdown.seconds">Giây</span></div>
+      </div>
+      <p class="countdown__past" id="countdownPast" hidden data-i18n="countdown.past">Chúng mình đã là của nhau</p>
+    </div>
+
+    <a class="btn btn--primary hero__cta" href="#rsvp" data-reveal data-i18n="hero.cta">Xác nhận tham dự</a>
+
+    <a class="hero__scroll" href="#story" data-i18n-attr="aria-label:hero.scroll" aria-label="Cuộn xuống">
+      <svg aria-hidden="true"><use href="#ic-arrow-down"/></svg>
+    </a>
+  </div>
+
+  <div class="hero__media">
+    <figure class="photo photo--hero" data-ph="0">
+      <img id="heroPhoto" alt="" loading="eager" decoding="async">
+    </figure>
+    <svg class="sprig sprig--tl" aria-hidden="true"><use href="#ic-sprig"/></svg>
+    <svg class="sprig sprig--br" aria-hidden="true"><use href="#ic-sprig"/></svg>
+  </div>
+
+</section>
+
+
+<!-- ══════════════════════════════════════════════ 02b. SLIDE ẢNH (dải ảnh) -->
+<section class="slideshow" id="moments"
+         aria-roledescription="carousel" data-i18n-attr="aria-label:slideshow.label">
+
+  <p class="eyebrow slideshow__eyebrow" data-reveal data-i18n="slideshow.eyebrow">Khoảnh khắc</p>
+
+  <!-- Khung ảnh: các slide xếp chồng lên nhau, chuyển bằng hiệu ứng mờ dần -->
+  <div class="slideshow__stage" id="slideStage" data-reveal>
+    <div class="slideshow__track" id="slideTrack"><!-- render.js đổ slide vào --></div>
+    <div class="slideshow__progress" id="slideProgress" aria-hidden="true"><i></i></div>
+  </div>
+
+  <!-- Thanh điều khiển: lùi · các chấm tròn · tiến · tạm dừng -->
+  <div class="slideshow__bar">
+    <button type="button" class="slideshow__btn" id="slidePrev"
+            data-i18n-attr="aria-label:slideshow.prev" aria-label="Ảnh trước">
+      <svg aria-hidden="true"><use href="#ic-chevron"/></svg>
+    </button>
+
+    <ul class="slideshow__dots" id="slideDots"><!-- render.js đổ chấm vào --></ul>
+
+    <button type="button" class="slideshow__btn slideshow__btn--next" id="slideNext"
+            data-i18n-attr="aria-label:slideshow.next" aria-label="Ảnh tiếp theo">
+      <svg aria-hidden="true"><use href="#ic-chevron"/></svg>
+    </button>
+
+    <button type="button" class="slideshow__btn slideshow__btn--toggle" id="slideToggle"
+            aria-pressed="false" aria-label="Dừng tự chuyển ảnh">
+      <svg aria-hidden="true"><use href="#ic-pause"/></svg>
+    </button>
+  </div>
+</section>
+
+
+<!-- ═════════════════════════════════════════════════════ 03. CÂU CHUYỆN -->
+<section class="section section--story" id="story">
+  <div class="wrap">
+
+    <header class="section__head" data-reveal>
+      <p class="section__num" data-bind="story.number">01</p>
+      <h2 class="section__title" data-i18n="story.title">Chuyện chúng mình</h2>
+      <svg class="divider" aria-hidden="true"><use href="#ic-divider"/></svg>
+      <p class="section__lead" data-i18n="story.lead"></p>
+    </header>
+
+    <div class="timeline" id="timeline">
+      <!-- Đường dây leo: pathLength="1" để vẽ dần bằng dashoffset 1→0,
+           vector-effect giữ nét mảnh đều dù SVG bị kéo giãn theo chiều cao -->
+      <svg class="vine" id="vine" viewBox="0 0 30 1000" preserveAspectRatio="none" aria-hidden="true">
+        <path id="vinePath" pathLength="1" vector-effect="non-scaling-stroke"
+              d="M15 0C23 55 7 110 15 165C23 220 7 275 15 330C23 385 7 440 15 495C23 550 7 605 15 660C23 715 7 770 15 825C23 880 7 945 15 1000"
+              fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <ol class="timeline__list" id="timelineList"></ol>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════ 04. SỰ KIỆN -->
+<section class="section section--alt" id="events">
+  <div class="wrap">
+    <header class="section__head" data-reveal>
+      <p class="section__num" data-bind="events.number">02</p>
+      <h2 class="section__title" data-i18n="events.title">Sự kiện</h2>
+      <svg class="divider" aria-hidden="true"><use href="#ic-divider"/></svg>
+      <p class="section__lead" data-i18n="events.lead"></p>
+    </header>
+    <div class="events" id="eventList"></div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════ 05. ALBUM -->
+<section class="section" id="gallery">
+  <div class="wrap">
+    <header class="section__head" data-reveal>
+      <p class="section__num" data-bind="gallery.number">03</p>
+      <h2 class="section__title" data-i18n="gallery.title">Album</h2>
+      <svg class="divider" aria-hidden="true"><use href="#ic-divider"/></svg>
+      <p class="section__lead" data-i18n="gallery.lead"></p>
+    </header>
+    <div class="gallery" id="galleryGrid" data-reveal></div>
+  </div>
+</section>
+
+
+<!-- ═════════════════════════════════════════════════════════ 06. RSVP -->
+<section class="section section--alt" id="rsvp">
+  <div class="wrap wrap--narrow">
+    <header class="section__head" data-reveal>
+      <p class="section__num" data-bind="rsvp.number">04</p>
+      <h2 class="section__title" data-i18n="rsvp.title">Xác nhận tham dự</h2>
+      <svg class="divider" aria-hidden="true"><use href="#ic-divider"/></svg>
+      <p class="section__lead" data-i18n="rsvp.lead"></p>
+    </header>
+
+    <div class="rsvp" data-reveal>
+      <form class="form" id="rsvpForm" novalidate>
+
+        <div class="field">
+          <label class="field__label" for="rsvpName" data-i18n="rsvp.fields.name">Họ và tên</label>
+          <input class="field__input" type="text" id="rsvpName" name="name"
+                 autocomplete="name" aria-describedby="errName">
+          <p class="field__error" id="errName" hidden></p>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="rsvpPhone" data-i18n="rsvp.fields.phone">Số điện thoại</label>
+          <input class="field__input" type="tel" id="rsvpPhone" name="phone"
+                 autocomplete="tel" inputmode="tel" aria-describedby="errPhone">
+          <p class="field__error" id="errPhone" hidden></p>
+        </div>
+
+        <fieldset class="field field--group">
+          <legend class="field__label" data-i18n="rsvp.fields.attend">Bạn có tham dự được không?</legend>
+          <div class="choices" id="attendChoices"></div>
+          <p class="field__error" id="errAttend" hidden></p>
+        </fieldset>
+
+        <!-- Hai trường dưới tự ẩn khi khách chọn "không tham dự" -->
+        <div class="field" id="guestsField">
+          <label class="field__label" for="rsvpGuests" data-i18n="rsvp.fields.guests">Số lượng khách</label>
+          <input class="field__input field__input--num" type="number" id="rsvpGuests" name="guests"
+                 min="1" max="10" step="1" value="1" inputmode="numeric" aria-describedby="errGuests">
+          <p class="field__error" id="errGuests" hidden></p>
+        </div>
+
+        <fieldset class="field field--group" id="sessionField">
+          <legend class="field__label" data-i18n="rsvp.fields.session">Bạn tham dự buổi nào?</legend>
+          <div class="choices" id="sessionChoices"></div>
+          <p class="field__error" id="errSession" hidden></p>
+        </fieldset>
+
+        <div class="field">
+          <label class="field__label" for="rsvpMessage">
+            <span data-i18n="rsvp.fields.message">Lời nhắn gửi cô dâu chú rể</span>
+            <span class="field__optional" data-i18n="rsvp.optional">không bắt buộc</span>
+          </label>
+          <textarea class="field__input field__input--area" id="rsvpMessage" name="message" rows="4"></textarea>
+        </div>
+
+        <button class="btn btn--primary form__submit" type="submit" data-i18n="rsvp.submit">Gửi xác nhận</button>
+      </form>
+
+      <div class="rsvp__thanks" id="rsvpThanks" hidden tabindex="-1">
+        <svg class="rsvp__thanks-leaf" aria-hidden="true"><use href="#ic-sprig"/></svg>
+        <h3 class="rsvp__thanks-title" data-i18n="rsvp.successTitle">Cảm ơn bạn rất nhiều!</h3>
+        <p class="rsvp__thanks-body" data-i18n="rsvp.successBody"></p>
+        <button type="button" class="btn btn--ghost" id="rsvpReset" data-i18n="rsvp.successAgain">Gửi phản hồi khác</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════ 07. MỪNG CƯỚI -->
+<section class="section" id="gifts">
+  <div class="wrap">
+    <header class="section__head" data-reveal>
+      <p class="section__num" data-bind="gifts.number">05</p>
+      <h2 class="section__title" data-i18n="gifts.title">Mừng cưới</h2>
+      <svg class="divider" aria-hidden="true"><use href="#ic-divider"/></svg>
+      <p class="section__lead" data-i18n="gifts.lead"></p>
+    </header>
+    <div class="gifts" id="giftList"></div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════ 08. FAQ -->
+<section class="section section--alt" id="faq">
+  <div class="wrap wrap--narrow">
+    <header class="section__head" data-reveal>
+      <p class="section__num" data-bind="faq.number">06</p>
+      <h2 class="section__title" data-i18n="faq.title">Hỏi đáp</h2>
+      <svg class="divider" aria-hidden="true"><use href="#ic-divider"/></svg>
+      <p class="section__lead" data-i18n="faq.lead"></p>
+    </header>
+    <div class="faq" id="faqList"></div>
+  </div>
+</section>
+
+</main>
+
+
+<!-- ════════════════════════════════════════════════════════ 09. FOOTER -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__monogram" data-reveal aria-hidden="true">
+      <span data-bind="couple.bride.initial">M</span>
+      <svg><use href="#ic-leaf"/></svg>
+      <span data-bind="couple.groom.initial">H</span>
+    </div>
+    <p class="footer__thanks" data-reveal data-i18n="footer.thanks"></p>
+    <p class="footer__hashtag" data-reveal data-bind="couple.hashtag">#MinhAnh_QuocHuy_2025</p>
+    <p class="footer__sign" data-reveal>
+      <span data-i18n="footer.signature">Hẹn gặp bạn</span>
+      <span class="footer__sign-names">
+        <span data-bind="couple.bride.short">Minh Anh</span> &amp; <span data-bind="couple.groom.short">Quốc Huy</span>
+      </span>
+    </p>
+  </div>
+</footer>
+
+<!-- Nút cuộn lên đầu trang — chỉ hiện sau khi khách đã cuộn qua hero -->
+<button type="button" class="to-top" id="toTop"
+        data-i18n-attr="aria-label:ui.backToTop" aria-label="Lên đầu trang">
+  <svg aria-hidden="true"><use href="#ic-arrow-down"/></svg>
+</button>
+
+<!-- ═══════════════════════════ TRÌNH PHÁT NHẠC NỀN ═══════════════════════
+     Đặt ở góc TRÁI dưới vì nút "lên đầu trang" đã chiếm góc phải dưới.
+     KHÔNG tự phát nhạc: trình duyệt chặn, và tự phát cũng làm phiền khách. -->
+<div class="player" id="player" hidden>
+  <audio id="playerAudio" preload="none"></audio>
+
+  <button type="button" class="player__fab" id="playerFab"
+          aria-expanded="false" aria-controls="playerPanel" aria-label="Mở trình phát nhạc">
+    <svg class="player__fab-icon" aria-hidden="true"><use href="#ic-music"/></svg>
+    <span class="player__pulse" id="playerPulse" aria-hidden="true"></span>
+  </button>
+
+  <div class="player__panel" id="playerPanel" hidden>
+    <p class="player__label" data-i18n="music.label">Nhạc nền</p>
+
+    <p class="player__now">
+      <span class="player__now-title" id="playerTitle"></span>
+      <span class="player__now-composer" id="playerComposer"></span>
+    </p>
+
+    <div class="player__controls">
+      <button type="button" class="player__btn" id="playerPrev"
+              data-i18n-attr="aria-label:music.prev" aria-label="Bài trước">
+        <svg aria-hidden="true"><use href="#ic-skip"/></svg>
+      </button>
+      <button type="button" class="player__btn player__btn--main" id="playerToggle"
+              aria-pressed="false" aria-label="Phát nhạc">
+        <svg aria-hidden="true"><use href="#ic-play"/></svg>
+      </button>
+      <button type="button" class="player__btn player__btn--next" id="playerNext"
+              data-i18n-attr="aria-label:music.next" aria-label="Bài tiếp theo">
+        <svg aria-hidden="true"><use href="#ic-skip"/></svg>
+      </button>
+      <button type="button" class="player__btn" id="playerMute"
+              aria-pressed="false" aria-label="Tắt tiếng">
+        <svg aria-hidden="true"><use href="#ic-volume"/></svg>
+      </button>
+      <label class="player__volume">
+        <span class="sr-only" data-i18n="music.volume">Âm lượng</span>
+        <input type="range" id="playerVolume" min="0" max="100" value="55" step="1">
+      </label>
+    </div>
+
+    <ul class="player__list" id="playerList"><!-- render.js đổ danh sách bài --></ul>
+
+    <p class="player__credit" data-i18n="music.credit"></p>
+  </div>
+</div>
+
+<!-- ══════════════════════ KHUNG XEM ẢNH PHÓNG TO (LIGHTBOX) ══════════════ -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" hidden
+     data-i18n-attr="aria-label:gallery.lightboxLabel">
+
+  <button type="button" class="lightbox__btn lightbox__close" id="lbClose"
+          data-i18n-attr="aria-label:gallery.close" aria-label="Đóng">
+    <svg aria-hidden="true"><use href="#ic-close"/></svg>
+  </button>
+
+  <button type="button" class="lightbox__btn lightbox__nav lightbox__nav--prev" id="lbPrev"
+          data-i18n-attr="aria-label:gallery.prevPhoto" aria-label="Ảnh trước">
+    <svg aria-hidden="true"><use href="#ic-chevron"/></svg>
+  </button>
+
+  <figure class="lightbox__figure">
+    <img class="lightbox__image" id="lbImage" alt="">
+    <figcaption class="lightbox__caption">
+      <span id="lbCaption"></span>
+      <span class="lightbox__counter" id="lbCounter"></span>
+    </figcaption>
+  </figure>
+
+  <button type="button" class="lightbox__btn lightbox__nav lightbox__nav--next" id="lbNext"
+          data-i18n-attr="aria-label:gallery.nextPhoto" aria-label="Ảnh tiếp theo">
+    <svg aria-hidden="true"><use href="#ic-chevron"/></svg>
+  </button>
+</div>
+
+<!-- Vùng thông báo cho trình đọc màn hình (copy TK, đổi ngôn ngữ...) -->
+<div class="sr-only" id="liveRegion" role="status" aria-live="polite"></div>
+
+
+<!-- ═══════════════════════════════════════ TEMPLATE — render.js nhân bản -->
+
+<template id="tpl-nav-link">
+  <li class="nav__item"><a class="nav__link" href="#"></a></li>
+</template>
+
+<template id="tpl-milestone">
+  <li class="milestone" data-reveal>
+    <span class="milestone__node" aria-hidden="true"><svg><use href="#ic-leaf"/></svg></span>
+    <div class="milestone__card">
+      <p class="milestone__date"></p>
+      <h3 class="milestone__title"></h3>
+      <p class="milestone__body"></p>
+    </div>
+  </li>
+</template>
+
+<template id="tpl-event">
+  <article class="event" data-reveal>
+    <p class="event__host"></p>
+    <h3 class="event__kind"></h3>
+    <p class="event__time"></p>
+    <p class="event__dateline"></p>
+    <hr class="event__rule">
+    <p class="event__venue"></p>
+    <p class="event__address"></p>
+    <a class="btn btn--ghost event__map" href="#" target="_blank" rel="noopener noreferrer">
+      <svg aria-hidden="true"><use href="#ic-pin"/></svg><span></span>
+    </a>
+  </article>
+</template>
+
+<template id="tpl-gallery-item">
+  <!-- Dùng <button> chứ không dùng <figure>: ô ảnh phải bấm được bằng chuột LẪN
+       bàn phím (Tab + Enter). Tên nút do chữ trong .photo__caption cung cấp. -->
+  <button type="button" class="photo photo--tile" aria-haspopup="dialog">
+    <img alt="" loading="lazy" decoding="async">
+    <span class="photo__caption"></span>
+  </button>
+</template>
+
+<template id="tpl-gift">
+  <article class="gift" data-reveal>
+    <p class="gift__side"></p>
+    <div class="gift__qr">
+      <img alt="" loading="lazy" decoding="async">
+      <svg class="gift__qr-frame" aria-hidden="true"><use href="#ic-qr-frame"/></svg>
+    </div>
+    <p class="gift__qr-hint"></p>
+    <p class="gift__holder"></p>
+    <p class="gift__bank"></p>
+    <p class="gift__number"></p>
+    <button type="button" class="btn btn--ghost gift__copy">
+      <svg class="gift__copy-icon" aria-hidden="true"><use href="#ic-copy"/></svg>
+      <span class="gift__copy-label"></span>
+    </button>
+  </article>
+</template>
+
+<template id="tpl-faq-item">
+  <div class="faq__item" data-reveal>
+    <h3 class="faq__heading">
+      <button type="button" class="faq__q" aria-expanded="false">
+        <span class="faq__q-text"></span>
+        <span class="faq__q-mark" aria-hidden="true"></span>
+      </button>
+    </h3>
+    <div class="faq__panel"><div class="faq__panel-inner"><p class="faq__a"></p></div></div>
+  </div>
+</template>
+
+<template id="tpl-track">
+  <li>
+    <button type="button" class="player__track">
+      <span class="player__track-title"></span>
+      <span class="player__track-composer"></span>
+    </button>
+  </li>
+</template>
+
+<template id="tpl-slide">
+  <figure class="slide" role="group" aria-roledescription="slide">
+    <img alt="" decoding="async">
+    <figcaption class="slide__caption"></figcaption>
+  </figure>
+</template>
+
+<template id="tpl-slide-dot">
+  <li><button type="button" class="slideshow__dot"></button></li>
+</template>
+
+<template id="tpl-theme-opt">
+  <li>
+    <button type="button" class="theme-opt" aria-pressed="false">
+      <span class="theme-opt__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="theme-opt__name"></span>
+      <svg class="theme-opt__check" aria-hidden="true"><use href="#ic-check"/></svg>
+    </button>
+  </li>
+</template>
+
+<template id="tpl-choice">
+  <label class="choice">
+    <input type="radio">
+    <span class="choice__mark" aria-hidden="true"></span>
+    <span class="choice__text"></span>
+  </label>
+</template>
+
+<script src="assets/js/config.js" defer></script>
+<script src="assets/js/render.js" defer></script>
+<script src="assets/js/main.js" defer></script>
+<!-- Hiệu ứng vệt trái tim theo con trỏ. Xoá đúng dòng này là gỡ hẳn hiệu ứng. -->
+<script src="assets/js/heart-cursor.js" defer></script>
+</body>
+</html>

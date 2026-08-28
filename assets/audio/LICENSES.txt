@@ -1,0 +1,50 @@
+NGUỒN VÀ GIẤY PHÉP NHẠC NỀN
+===========================
+Toàn bộ file trong thư mục này là public domain hoặc Creative Commons cho phép
+dùng thương mại. Các file CC BY BẮT BUỘC phải ghi công (attribution) hiển thị
+được trên trang — xem dòng "Ghi công" của từng bài.
+
+--------------------------------------------------------------------------
+1) canon-in-d.mp3
+   Tác phẩm : Canon in D major, P. 37 — Johann Pachelbel (1653–1706), PD
+   Bản thu  : "Canon in D Major" — Kevin MacLeod (incompetech.com), 2011
+   Giấy phép: CC BY 3.0 — https://creativecommons.org/licenses/by/3.0/
+   Nguồn    : https://commons.wikimedia.org/wiki/File:Canon_in_D_Major_(ISRC_USUAN1100301).mp3
+   Ghi công : Canon in D Major — Kevin MacLeod (incompetech.com),
+              Licensed under Creative Commons: By Attribution 3.0
+   Thời lượng: 264 giây | 5.226.209 byte | MP3 128 kbps 44.1 kHz stereo
+
+--------------------------------------------------------------------------
+2) bridal-chorus.mp3
+   Tác phẩm : Bridal Chorus ("Here Comes the Bride"), từ vở Lohengrin —
+              Richard Wagner (1813–1883), PD
+   Bản thu  : "Wagner Bridal Chorus" — Kevin MacLeod (incompetech.com), 2007
+   Giấy phép: CC BY 3.0 — https://creativecommons.org/licenses/by/3.0/
+   Nguồn    : https://commons.wikimedia.org/wiki/File:Wagner_Bridal_Chorus_(ISRC_USUAN1100021).mp3
+   Ghi công : Wagner Bridal Chorus — Kevin MacLeod (incompetech.com),
+              Licensed under Creative Commons: By Attribution 3.0
+   Thời lượng: 139 giây | 5.673.089 byte | MP3 320 kbps 48 kHz stereo
+
+--------------------------------------------------------------------------
+3) wedding-march.mp3
+   Tác phẩm : Wedding March, từ A Midsummer Night's Dream Op. 61 —
+              Felix Mendelssohn (1809–1847), PD
+   Bản thu  : European Archive / Musopen — PUBLIC DOMAIN (không cần ghi công)
+   Giấy phép: Public Domain
+   Nguồn    : https://commons.wikimedia.org/wiki/File:A_Midsummer_Night%27s_Dream_Op._61_Wedding_March_(Mendelssohn)_European_Archive.ogg
+              (bản gốc .ogg; file .mp3 ở đây là bản transcode MP3 chính thức
+               do Wikimedia tạo sẵn)
+   Musopen  : https://musopen.org/music/317-a-midsummer-nights-dream-op-61/
+   Thời lượng: 294 giây | 4.585.786 byte | MP3 64 kbps 44.1 kHz stereo
+
+--------------------------------------------------------------------------
+4) ave-maria.mp3
+   Tác phẩm : "Ave Maria in Due" — hoà tấu kết hợp Ave Maria của Franz Schubert
+              (D. 839) và Bach/Gounod. Soạn cho ban kèn: MSgt Aldo Forte.
+   Bản thu  : United States Air Force Heritage of America Band, Concert Band
+              (album "A Christmas Festival", 1997)
+   Giấy phép: Public Domain — tác phẩm của Chính phủ Hoa Kỳ (17 U.S.C. §105),
+              không cần ghi công
+   Nguồn    : https://commons.wikimedia.org/wiki/File:Ave_Maria_in_Due_-_Concert_Band_-_United_States_Air_Force_Heritage_of_America_Band.mp3
+   Gốc      : https://www.music.af.mil/Multimedia/Music/Public-Domain-Music/
+   Thời lượng: 505 giây | 8.675.735 byte | MP3 128 kbps 44.1 kHz stereo

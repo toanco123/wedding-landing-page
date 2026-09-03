@@ -38,6 +38,7 @@ Mở bằng bất kỳ trình soạn thảo nào (VS Code, Notepad, TextEdit…)
 | Ngày cưới, đồng hồ đếm ngược | `03. NGÀY & NƠI` | Xem kỹ mục 2.1 bên dưới |
 | Menu điều hướng | `04. NAV` | `id` phải trùng `id` của `<section>` trong `index.html` |
 | Ảnh hero, nút CTA | `05. HERO` | |
+| Câu dẫn thiệp mời riêng | `05b. KHÁCH MỜI` | Thiệp theo tên từng khách — xem mục 10 |
 | Câu chuyện tình yêu | `07. CÂU CHUYỆN` | Thêm/bớt mốc thoải mái, đường dây leo tự dài ra |
 | Giờ & địa chỉ 2 buổi lễ | `08. SỰ KIỆN` | Kèm link Google Maps |
 | Album ảnh | `09. ALBUM ẢNH` | **Đừng đổi** `area` nếu không rành CSS |
@@ -359,7 +360,108 @@ Muốn đổ thẳng vào Google Sheets thì dùng Google Apps Script Web App, c
 
 ---
 
-## 10. Đưa trang lên mạng
+## 10. Thiệp mời riêng theo tên từng khách
+
+Thêm `?guest=` cùng tên khách vào **cuối link** là trang tự đổi thành thiệp
+mời riêng cho người đó:
+
+```
+https://ten-mien-cua-ban.com/?guest=Anh Nguyễn Văn A
+```
+
+Khách mở link sẽ thấy:
+
+- **Đầu trang** — ngay dưới dòng "Save the date" hiện thêm:
+
+  > TRÂN TRỌNG KÍNH MỜI
+  > *Anh Nguyễn Văn A*
+
+- **Cuối trang** — "Hẹn gặp bạn" đổi thành "Hẹn gặp **Anh Nguyễn Văn A**"
+
+Không có `?guest=` thì trang hiện bản chung **y hệt như cũ** — nên vẫn gửi link
+trần cho ai cũng được.
+
+### Xưng hô viết luôn vào tên
+
+Không có ô riêng cho xưng hô — bạn gõ thẳng vào phần tên khi tạo link, muốn xưng
+hô kiểu gì cũng được:
+
+| Link | Trang hiện ra |
+|---|---|
+| `?guest=Anh Nguyễn Văn A` | Anh Nguyễn Văn A |
+| `?guest=Cô Lan %26 Chú Hùng` | Cô Lan & Chú Hùng |
+| `?guest=Gia đình Bác Bảy` | Gia đình Bác Bảy |
+| `?guest=Vợ chồng bạn Minh` | Vợ chồng bạn Minh |
+
+> **Lưu ý:** nếu tên có dấu `&` thì phải viết thành `%26`, nếu không trình duyệt
+> sẽ hiểu nhầm là bắt đầu một tham số mới và tên bị cụt.
+
+### Dùng chung với `?lang=`
+
+Nối hai tham số bằng dấu `&`:
+
+```
+https://ten-mien-cua-ban.com/?lang=en&guest=Anh Nguyễn Văn A
+```
+
+Câu dẫn sẽ sang tiếng Anh ("We cordially invite"), còn tên khách giữ nguyên như
+bạn gõ. Khách bấm nút VI/EN trên trang cũng không làm mất tên.
+
+### Tạo link hàng loạt bằng Google Sheets / Excel
+
+Cột A gõ danh sách tên khách (kèm xưng hô), cột B dán công thức này rồi kéo xuống:
+
+```
+="https://ten-mien-cua-ban.com/?guest="&ENCODEURL(A2)
+```
+
+*(Excel dùng `ENCODEURL` giống hệt. Nếu Excel bản cũ không có hàm này, xem mục
+"Vì sao cần ENCODEURL" bên dưới.)*
+
+Kết quả:
+
+| A (tên khách) | B (link gửi đi) |
+|---|---|
+| Anh Nguyễn Văn A | `https://.../?guest=Anh%20Nguy%E1%BB%85n%20V%C4%83n%20A` |
+| Gia đình Bác Bảy | `https://.../?guest=Gia%20%C4%91%C3%ACnh%20B%C3%A1c%20B%E1%BA%A3y` |
+
+Copy cột B rồi dán vào Zalo / Messenger cho từng người.
+
+**Vì sao cần `ENCODEURL`:** tên tiếng Việt có dấu và khoảng trắng nên phải được
+"mã hoá" thành dạng `%E1%BB%85`. Nếu bạn tự gõ tay trên thanh địa chỉ trình
+duyệt thì trình duyệt tự làm việc này giúp — nhưng link copy từ ô Excel chưa mã
+hoá mà dán vào Zalo thì có thể bị đứt ở chỗ dấu cách.
+
+### Sửa câu dẫn
+
+Mở `assets/js/config.js`, tìm `★ SỬA` ở mục **05b. KHÁCH MỜI**:
+
+```js
+guest: {
+  enabled:   true,      // false = tắt hẳn, ?guest= trên link bị bỏ qua
+  param:     'guest',   // đổi thành 'ten' thì link viết ?ten=...
+  maxLength: 60,        // tên dài hơn sẽ bị cắt bớt
+
+  invite:   { vi: 'Trân trọng kính mời', en: 'We cordially invite' },
+  farewell: { vi: 'Hẹn gặp',             en: 'See you,' },
+},
+```
+
+- `invite` — câu dẫn ở đầu trang
+- `farewell` — lời chào ở cuối trang
+- Muốn **tắt hẳn** tính năng: đổi `enabled` thành `false`
+
+### Hai điều cần biết
+
+- **Ảnh preview khi chia sẻ link không có tên khách.** Facebook và Zalo không
+  chạy JavaScript khi quét link, nên phần xem trước vẫn là bản chung. Chỉ khi
+  khách bấm vào mở trang thì tên mới hiện ra.
+- **Khách có thể sửa tên trên thanh địa chỉ.** Đây chỉ là lời chào cho ấm cúng,
+  không phải vé mời — đừng dùng nó để kiểm soát ai được vào.
+
+---
+
+## 11. Đưa trang lên mạng
 
 Trang là file tĩnh nên host ở đâu cũng được, đều **miễn phí**:
 
@@ -374,7 +476,7 @@ Sau khi có link, gửi cho khách kèm ngôn ngữ mong muốn:
 
 ---
 
-## 11. Cấu trúc dự án
+## 12. Cấu trúc dự án
 
 ```
 weeding-ladingpage/
@@ -396,10 +498,11 @@ weeding-ladingpage/
 
 ---
 
-## 12. Những gì trang này làm được
+## 13. Những gì trang này làm được
 
 - Đồng hồ đếm ngược chạy thật tới giờ cưới
 - Song ngữ Việt / English, giữ trong URL khi chia sẻ link
+- Thiệp mời riêng theo tên từng khách qua `?guest=` (xem mục 10)
 - 5 bảng màu, đổi tức thì, nhớ lựa chọn của khách
 - Timeline câu chuyện có đường dây leo vẽ dần khi cuộn
 - Album ảnh bố cục bất đối xứng (desktop) / masonry 2 cột (mobile)
@@ -413,7 +516,7 @@ weeding-ladingpage/
 - Chạy tốt trên điện thoại, dùng được bằng bàn phím, tôn trọng
   `prefers-reduced-motion` (khách bật chế độ giảm chuyển động sẽ không thấy hiệu ứng)
 
-## 13. Những gì **chưa** làm
+## 14. Những gì **chưa** làm
 
 - Chưa có backend nhận RSVP (xem mục 9)
 - Ảnh QR đang là khung minh hoạ — cần thay bằng ảnh QR thật của bạn

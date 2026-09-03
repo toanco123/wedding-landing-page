@@ -73,6 +73,29 @@ const WEDDING_CONFIG = {
     photoAlt: { vi: 'Ảnh cưới của Kiều Trang và Việt Toàn', en: 'Wedding photo of Kieu Trang and Viet Toan' },
   },
 
+  /* ------------------------------------------------------------ 05b. KHÁCH MỜI
+     Thiệp riêng theo tên: thêm  ?guest=<tên khách>  vào cuối link.
+     Ví dụ:  index.html?guest=Anh%20Nguy%E1%BB%85n%20V%C4%83n%20A
+
+     Có tên  → hero hiện thêm dòng "Trân trọng kính mời / <tên>",
+               footer đổi thành "Hẹn gặp <tên>".
+     Không có → trang hiện bản chung y như cũ.
+
+     Xưng hô gõ luôn vào tên khi tạo link: "Anh Nguyễn Văn A",
+     "Gia đình Bác Bảy", "Cô Lan & Chú Hùng"...
+     (Cách tạo link hàng loạt: xem README mục 10.)
+
+     ★ SỬA: câu dẫn trước tên khách
+     ---------------------------------------------------------------------- */
+  guest: {
+    enabled:   true,      // false = tắt hẳn, ?guest= trên link bị bỏ qua
+    param:     'guest',   // tên tham số trên URL
+    maxLength: 60,        // cắt bớt nếu ai đó dán chuỗi quá dài
+
+    invite:   { vi: 'Trân trọng kính mời', en: 'We cordially invite' },
+    farewell: { vi: 'Hẹn gặp',             en: 'See you,' },
+  },
+
   /* ------------------------------------------------------------ 06. COUNTDOWN
      Nhãn của đồng hồ đếm ngược + lời nhắn khi đã qua ngày cưới.
      ---------------------------------------------------------------------- */

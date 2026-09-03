@@ -199,6 +199,13 @@
   <div class="hero__text">
     <p class="eyebrow" data-reveal data-i18n="hero.eyebrow">Save the date</p>
 
+    <!-- Dòng kính mời riêng — chỉ hiện khi link có ?guest=<tên khách>.
+         Không có thì render.js gỡ hẳn khối này khỏi trang. -->
+    <p class="hero__guest" data-guest-show hidden data-reveal>
+      <span class="hero__guest-label" data-i18n="guest.invite">Trân trọng kính mời</span>
+      <span class="hero__guest-name" data-guest-name></span>
+    </p>
+
     <h1 class="hero__names" data-reveal>
       <span class="hero__name" data-bind="couple.bride.name">Đoàn Kiều Trang</span>
       <span class="hero__amp" aria-hidden="true">&amp;</span>
@@ -443,7 +450,12 @@
     <p class="footer__thanks" data-reveal data-i18n="footer.thanks"></p>
     <p class="footer__hashtag" data-reveal data-bind="couple.hashtag">#KieuTrang_VietToan_2026</p>
     <p class="footer__sign" data-reveal>
-      <span data-i18n="footer.signature">Hẹn gặp bạn</span>
+      <!-- Bản chung / bản có tên khách — render.js giữ lại đúng một cái -->
+      <span data-guest-hide data-i18n="footer.signature">Hẹn gặp bạn</span>
+      <span class="footer__sign-guest" data-guest-show hidden>
+        <span data-i18n="guest.farewell">Hẹn gặp</span>
+        <span class="footer__sign-guest-name" data-guest-name></span>
+      </span>
       <span class="footer__sign-names">
         <span data-bind="couple.bride.short">Kiều Trang</span> &amp; <span data-bind="couple.groom.short">Việt Toàn</span>
       </span>

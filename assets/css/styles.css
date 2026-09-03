@@ -380,6 +380,30 @@ body.is-locked{
   position:relative; z-index:2;
   padding:calc(var(--nav-h) + clamp(40px,9vw,72px)) var(--pad) clamp(48px,8vw,72px);
 }
+/* Dòng "Trân trọng kính mời <tên khách>" — chỉ có mặt khi link mang ?guest= */
+.hero__guest{
+  display:grid; gap:5px;
+  margin-top:20px;
+}
+.hero__guest-label{
+  font-size:.68rem; font-weight:500;
+  letter-spacing:.24em; text-transform:uppercase;
+  color:var(--color-text-faint);
+}
+.hero__guest-name{
+  font-family:var(--serif); font-style:italic;
+  font-optical-sizing:auto;
+  font-variation-settings:'SOFT' 80,'WONK' 1;
+  font-weight:360;
+  font-size:clamp(1.3rem, .95rem + 1.7vw, 1.85rem);
+  line-height:1.2; letter-spacing:-.008em;
+  text-wrap:balance;
+  color:var(--color-accent);
+  /* Tên dài (vd "Gia đình Bác Bảy & các cháu") tự xuống dòng, không tràn ngang */
+  overflow-wrap:break-word;
+  max-width:26ch;
+}
+
 .hero__names{
   font-family:var(--serif); font-style:italic;
   font-optical-sizing:auto;
@@ -1138,6 +1162,10 @@ body.is-menu-open .to-top{ opacity:0; visibility:hidden }
   color:var(--color-text-faint);
 }
 .footer__sign-names{ color:var(--color-text-muted) }
+.footer__sign-guest{
+  display:inline-flex; flex-wrap:wrap; justify-content:center; gap:6px;
+}
+.footer__sign-guest-name{ color:var(--color-text-muted) }
 
 /* ------------------------------------------- 16. GIẢM CHUYỂN ĐỘNG (A11Y) */
 @media (prefers-reduced-motion: reduce){

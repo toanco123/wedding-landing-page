@@ -13,6 +13,11 @@
      data-bind="đường.dẫn"            → textContent = giá trị thô (tên, số TK...)
      data-i18n-attr="alt:đường.dẫn"   → gán bản dịch vào thuộc tính (nhiều cái
                                         thì ngăn bằng dấu phẩy)
+
+   Ba thuộc tính cho thiệp mời riêng theo tên (?guest=<tên> trên URL):
+     data-guest-name                  → ô để đổ tên khách vào
+     data-guest-show                  → chỉ giữ lại khi CÓ tên khách
+     data-guest-hide                  → chỉ giữ lại khi KHÔNG có tên khách
    ========================================================================== */
 
 window.Wedding = (function () {
@@ -24,6 +29,7 @@ window.Wedding = (function () {
   var LANGS = ['vi', 'en'];
   var lang = 'vi';
   var langHooks = [];
+  var guestName = '';
 
   /* ------------------------------------------------------------ tiện ích */
 
@@ -285,6 +291,46 @@ window.Wedding = (function () {
     });
   }
 
+  /* ------------------------------------------------- KHÁCH MỜI RIÊNG
+     Đọc ?guest=<tên khách> trên URL rồi đổ vào các ô data-guest-name.
+     Không có tham số thì trang giữ nguyên bản chung.                     */
+
+  function initGuestFromUrl() {
+    if (!CFG.guest || CFG.guest.enabled === false) return;
+    try {
+      var raw = new URL(window.location.href)
+        .searchParams.get(CFG.guest.param || 'guest');
+      if (!raw) return;
+      // Gộp mọi khoảng trắng (kể cả xuống dòng) về một dấu cách,
+      // rồi cắt bớt phòng khi ai đó dán vào một chuỗi quá dài.
+      var clean = String(raw).replace(/\s+/g, ' ').trim();
+      guestName = clean.slice(0, CFG.guest.maxLength || 60);
+    } catch (e) { /* file:// ở vài trình duyệt không cho new URL */ }
+  }
+
+  function renderGuest() {
+    var has = !!guestName;
+
+    // textContent (không phải innerHTML) → tên khách không thể chèn thẻ HTML
+    document.querySelectorAll('[data-guest-name]').forEach(function (n) {
+      n.textContent = guestName;
+    });
+
+    // Gỡ HẲN nhánh không dùng khỏi DOM thay vì chỉ ẩn: nếu để lại, nó vẫn
+    // lọt vào mảng [data-reveal] mà main.js chụp lúc khởi động, làm lệch
+    // độ trễ hiệu ứng của các dòng hero phía sau.
+    document.querySelectorAll(has ? '[data-guest-hide]' : '[data-guest-show]')
+      .forEach(function (n) { n.remove(); });
+
+    if (!has) return;
+
+    document.querySelectorAll('[data-guest-show]').forEach(function (n) {
+      n.hidden = false;
+    });
+    // Móc để CSS/theme có thể nhận biết trang đang ở bản mời riêng
+    document.documentElement.setAttribute('data-guest', 'true');
+  }
+
   function renderStructure() {
     renderNav();
     renderHero();
@@ -296,6 +342,7 @@ window.Wedding = (function () {
     renderRsvp();
     renderGifts();
     renderFaq();
+    renderGuest();
   }
 
   /* ---------------------------------------------------- ÁP DỤNG NGÔN NGỮ */
@@ -375,6 +422,7 @@ window.Wedding = (function () {
   /* --------------------------------------------------------------- KHỞI ĐỘNG */
 
   initLangFromUrl();
+  initGuestFromUrl();
   renderStructure();
   applyI18n();
 
@@ -386,6 +434,7 @@ window.Wedding = (function () {
     attachImage: attachImage,   // main.js dùng để nạp ảnh slide khi cần
     setLang: setLang,
     getLang: function () { return lang; },
+    getGuestName: function () { return guestName; },
     onLangChange: function (fn) { langHooks.push(fn); }
   };
 })();

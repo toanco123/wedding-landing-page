@@ -394,7 +394,18 @@
           <textarea class="field__input field__input--area" id="rsvpMessage" name="message" rows="4"></textarea>
         </div>
 
+        <!-- Bẫy bot (honeypot): người thật không nhìn thấy ô này nên luôn để trống.
+             Bot tự động điền hết mọi ô → main.js thấy có chữ là bỏ qua, không gửi.
+             Ẩn bằng CSS chứ không dùng type="hidden" vì bot bỏ qua ô hidden. -->
+        <div class="form__trap" aria-hidden="true">
+          <label for="rsvpWebsite">Website</label>
+          <input type="text" id="rsvpWebsite" name="website" tabindex="-1" autocomplete="off">
+        </div>
+
         <button class="btn btn--primary form__submit" type="submit" data-i18n="rsvp.submit">Gửi xác nhận</button>
+
+        <!-- Báo lỗi khi gửi lên server không thành công (mất mạng, sai endpoint...) -->
+        <p class="field__error form__error" id="errForm" role="alert" hidden></p>
       </form>
 
       <div class="rsvp__thanks" id="rsvpThanks" hidden tabindex="-1">

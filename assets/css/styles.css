@@ -846,6 +846,18 @@ body.is-locked{
 .choice__text{ font-size:.94rem }
 
 .form__submit{ justify-self:start; margin-top:6px }
+/* Trong lúc đang gửi lên server: mờ đi và không bấm được nữa */
+.form__submit:disabled{ opacity:.55; cursor:progress }
+
+/* Báo lỗi cho cả form (gửi thất bại), khác với lỗi của từng ô */
+.form__error{ margin-top:-2px }
+
+/* Bẫy bot: đẩy ra ngoài màn hình thay vì display:none — bot bỏ qua ô
+   display:none nhưng vẫn điền ô này, đúng như ta muốn. */
+.form__trap{
+  position:absolute; left:-9999px;
+  width:1px; height:1px; overflow:hidden;
+}
 
 .rsvp__thanks{ text-align:center; padding:clamp(28px,5vw,52px) 0; position:relative }
 .rsvp__thanks:focus{ outline:none }

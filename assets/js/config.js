@@ -247,10 +247,19 @@ const WEDDING_CONFIG = {
   },
 
   /* -------------------------------------------------------------- 10. RSVP
-     ★ SỬA: toàn bộ chữ trong form xác nhận tham dự.
+     ★ SỬA: toàn bộ chữ trong form xác nhận tham dự, và `endpoint` — nơi
+     nhận dữ liệu khách gửi lên.
+
+     endpoint để RỖNG  → chưa nối backend, dữ liệu chỉ in ra Console (F12).
+                          Trang vẫn chạy bình thường, khách vẫn thấy lời cảm ơn.
+     endpoint có URL   → gửi thật bằng fetch(). Cách lấy URL: README mục 9.
      ---------------------------------------------------------------------- */
   rsvp: {
     number: '04',
+
+    // ★ SỬA: dán URL Google Apps Script Web App vào đây (README mục 9)
+    // Dạng: 'https://script.google.com/macros/s/AKfy..../exec'
+    endpoint: '',
     title:  { vi: 'Xác nhận tham dự', en: 'Kindly RSVP' },
     lead:   {
       vi: 'Vui lòng phản hồi trước ngày 09.12.2026 để gia đình chúng mình chuẩn bị chu đáo nhất.',
@@ -279,13 +288,20 @@ const WEDDING_CONFIG = {
       { value: 'tiec',    label: { vi: 'Tiệc Cưới (buổi tối)',  en: 'Reception (evening)' } },
       { value: 'ca-hai',  label: { vi: 'Cả hai buổi',           en: 'Both celebrations' } },
     ],
-    submit: { vi: 'Gửi xác nhận', en: 'Send confirmation' },
+    submit:  { vi: 'Gửi xác nhận', en: 'Send confirmation' },
+    // Chữ trên nút trong lúc đang gửi lên server
+    sending: { vi: 'Đang gửi…',    en: 'Sending…' },
     errors: {
       name:    { vi: 'Vui lòng nhập họ tên (ít nhất 2 ký tự).', en: 'Please enter your name (at least 2 characters).' },
       phone:   { vi: 'Số điện thoại chưa đúng định dạng (VD: 0901234567).', en: 'That phone number does not look right (e.g. 0901234567).' },
       attend:  { vi: 'Vui lòng cho chúng mình biết bạn có đến được không.', en: 'Please let us know whether you can join.' },
       guests:  { vi: 'Số khách phải từ 1 đến 10 người.', en: 'Guest count must be between 1 and 10.' },
       session: { vi: 'Vui lòng chọn buổi bạn tham dự.', en: 'Please choose which celebration you will attend.' },
+      // Hiện khi bấm gửi mà không tới được server (mất mạng, endpoint sai...)
+      send:    {
+        vi: 'Gửi không thành công. Bạn kiểm tra kết nối mạng rồi bấm gửi lại giúp mình nhé.',
+        en: 'We could not send your response. Please check your connection and try again.',
+      },
     },
     successTitle: { vi: 'Cảm ơn bạn rất nhiều!', en: 'Thank you so much!' },
     successBody:  {

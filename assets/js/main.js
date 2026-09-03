@@ -668,6 +668,9 @@
 
   var form        = $('#rsvpForm');
   var thanks      = $('#rsvpThanks');
+  var submitBtn   = $('#rsvpForm .form__submit');
+  var trapInput   = $('#rsvpWebsite');
+  var sending     = false;   // chặn bấm gửi lần hai khi lần đầu chưa xong
   var guestsField = $('#guestsField');
   var sessionField= $('#sessionField');
 
@@ -764,28 +767,79 @@
     };
   }
 
+  // Bật/tắt trạng thái "đang gửi": nút đổi chữ và khoá lại để khỏi bấm hai lần
+  function setSending(on) {
+    sending = on;
+    submitBtn.disabled = on;
+    submitBtn.textContent = W.t(on ? CFG.rsvp.sending : CFG.rsvp.submit);
+    // Nút mang data-i18n nên applyI18n() sẽ ghi đè chữ khi khách đổi ngôn ngữ.
+    // Lúc đang gửi thì tạm gỡ đánh dấu để chữ "Đang gửi…" không bị mất.
+    if (on) submitBtn.removeAttribute('data-i18n');
+    else    submitBtn.setAttribute('data-i18n', 'rsvp.submit');
+  }
+
+  function showThanks() {
+    form.hidden = true;
+    thanks.hidden = false;
+    thanks.focus();
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    var result = validate();
+    if (sending) return;                 // đang gửi rồi thì bỏ qua cú bấm này
+    clearError('errForm');
 
+    var result = validate();
     if (!result.ok) {
       if (result.firstBad) result.firstBad.focus();
       return;
     }
 
-    // ── Chưa có backend: dữ liệu in ra Console (F12 → Console) ─────────────
-    // Muốn gửi thật? Thay console.log bằng fetch() tới Formspree / Google
-    // Apps Script / API của bạn — cấu trúc payload giữ nguyên là được.
-    console.log('[RSVP] Dữ liệu khách gửi / guest submission:', result.data);
+    // Bẫy bot: ô này ẩn với người thật nên có chữ tức là bot điền.
+    // Giả vờ thành công để bot không thử lại, nhưng không gửi đi đâu cả.
+    if (trapInput && trapInput.value.trim() !== '') {
+      showThanks();
+      return;
+    }
 
-    form.hidden = true;
-    thanks.hidden = false;
-    thanks.focus();
+    var endpoint = CFG.rsvp.endpoint;
+
+    // ── Chưa dán endpoint: in ra Console (F12 → Console) ──────────────────
+    // Cách lấy URL Google Apps Script: xem README mục 9.
+    if (!endpoint) {
+      console.log('[RSVP] Chưa có endpoint — dữ liệu khách gửi:', result.data);
+      showThanks();
+      return;
+    }
+
+    setSending(true);
+
+    // Content-Type là text/plain có chủ đích: Google Apps Script KHÔNG trả lời
+    // được request preflight OPTIONS. Gửi text/plain thì trình duyệt xếp vào
+    // "simple request" nên bỏ qua preflight. Phía Apps Script vẫn đọc được
+    // JSON bằng e.postData.contents.
+    fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(result.data)
+    })
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        setSending(false);
+        showThanks();
+      })
+      .catch(function (err) {
+        console.error('[RSVP] Gửi thất bại:', err);
+        setSending(false);
+        showError('errForm', W.t(CFG.rsvp.errors.send));
+        submitBtn.focus();
+      });
   });
 
   $('#rsvpReset').addEventListener('click', function () {
     form.reset();
-    ['errName', 'errPhone', 'errAttend', 'errGuests', 'errSession'].forEach(function (id) { clearError(id); });
+    ['errName', 'errPhone', 'errAttend', 'errGuests', 'errSession', 'errForm']
+      .forEach(function (id) { clearError(id); });
     $$('#rsvpForm [aria-invalid]').forEach(function (n) { n.removeAttribute('aria-invalid'); });
     syncConditional();
     thanks.hidden = true;

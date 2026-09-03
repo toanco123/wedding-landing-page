@@ -43,6 +43,7 @@ Mở bằng bất kỳ trình soạn thảo nào (VS Code, Notepad, TextEdit…)
 | Giờ & địa chỉ 2 buổi lễ | `08. SỰ KIỆN` | Kèm link Google Maps |
 | Album ảnh | `09. ALBUM ẢNH` | **Đừng đổi** `area` nếu không rành CSS |
 | Chữ trong form RSVP | `10. RSVP` | Gồm cả các câu báo lỗi |
+| Nơi nhận dữ liệu RSVP | `10. RSVP` → `endpoint` | Dán URL Google Apps Script — xem mục 9 |
 | Số tài khoản, ngân hàng, QR | `11. MỪNG CƯỚI` | |
 | Câu hỏi thường gặp | `12. FAQ` | |
 | Lời cảm ơn ở footer | `13. FOOTER` | |
@@ -330,33 +331,109 @@ Mở `assets/js/heart-cursor.js`, khối `★ SỬA Ở ĐÂY` ngay đầu file:
 
 ---
 
-## 9. Form RSVP — dữ liệu đi đâu?
+## 9. Form RSVP — nhận phản hồi của khách vào Google Sheet
 
-**Hiện tại chưa nối backend.** Khi khách bấm gửi, dữ liệu được in ra Console
-(mở bằng `F12` → tab *Console*):
+Khi khách bấm **Gửi xác nhận**, dữ liệu được gửi tới địa chỉ ghi trong
+`config.js` → `rsvp.endpoint`.
 
-```js
-[RSVP] Dữ liệu khách gửi / guest submission: {
-  name: 'Nguyễn Văn A', phone: '0901234567', attending: true,
-  guests: 2, session: 'tiec', message: '...', lang: 'vi',
-  submittedAt: '2026-08-28T...'
-}
+**Để trống `endpoint`** (mặc định) thì trang vẫn chạy bình thường, khách vẫn
+thấy lời cảm ơn, dữ liệu chỉ in ra Console (`F12` → tab *Console*). Tiện để xem
+thử trước khi cài đặt thật.
+
+Cách nối vào **Google Sheet** dưới đây là miễn phí, không giới hạn số lượt gửi,
+và dữ liệu về thẳng Sheet của bạn để lọc, cộng số mâm, in danh sách.
+
+### 9.1. Sáu bước cài đặt (làm một lần, khoảng 10 phút)
+
+> **Đăng nhập bằng Gmail cá nhân**, đừng dùng email công ty. Tài khoản công ty
+> (Google Workspace) thường bị quản trị viên chặn ở **bước 5** — chỗ chọn
+> "Bất kỳ ai" — và bạn sẽ không tự sửa được.
+
+**Bước 1.** Tạo một Google Sheet mới tại <https://sheets.new>, đặt tên gì cũng được
+(ví dụ *"RSVP đám cưới"*).
+
+**Bước 2.** Trong Sheet đó, vào menu **Tiện ích mở rộng → Apps Script**.
+Một tab mới mở ra.
+
+**Bước 3.** Xoá hết đoạn code mẫu có sẵn. Mở file [`docs/apps-script.gs`](docs/apps-script.gs)
+trong dự án này, copy **toàn bộ**, dán vào. Bấm biểu tượng đĩa mềm để lưu.
+
+**Bước 4.** Bấm nút **Triển khai** (góc trên bên phải) → **Tập hợp triển khai mới**.
+
+**Bước 5.** Trong hộp thoại hiện ra:
+
+| Mục | Chọn |
+|---|---|
+| Loại (bấm bánh răng bên trái) | **Ứng dụng web** |
+| Nội dung mô tả | gì cũng được, ví dụ `RSVP v1` |
+| Thực thi với tư cách | **Tôi** (email của bạn) |
+| Ai có quyền truy cập | **Bất kỳ ai** ← quan trọng nhất |
+
+Bấm **Triển khai**. Lần đầu Google sẽ hỏi cấp quyền:
+chọn tài khoản → màn hình cảnh báo *"Google chưa xác minh ứng dụng này"* →
+bấm **Nâng cao** → **Chuyển đến … (không an toàn)** → **Cho phép**.
+
+> Cảnh báo này là bình thường: "ứng dụng chưa xác minh" ở đây chính là đoạn
+> script bạn vừa tự dán vào. Nó chỉ ghi dữ liệu vào Sheet của chính bạn.
+
+**Bước 6.** Copy **URL ứng dụng web** hiện ra, dạng:
+
+```
+https://script.google.com/macros/s/AKfycb..................../exec
 ```
 
-### Nối vào nơi nhận thật
-
-Mở `assets/js/main.js`, tìm `console.log('[RSVP]`, thay bằng lời gọi `fetch()`.
-Giữ nguyên cấu trúc `result.data` là được. Ví dụ với [Formspree](https://formspree.io) (miễn phí):
+Mở `assets/js/config.js`, tìm `endpoint` trong mục `10. RSVP`, dán vào:
 
 ```js
-fetch('https://formspree.io/f/MÃ_CỦA_BẠN', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(result.data)
-});
+endpoint: 'https://script.google.com/macros/s/AKfycb..../exec',
 ```
 
-Muốn đổ thẳng vào Google Sheets thì dùng Google Apps Script Web App, cách gọi tương tự.
+Xong. Đẩy code lên lại là khách gửi được.
+
+### 9.2. Kiểm tra đã chạy chưa
+
+1. **Thử endpoint trước:** dán URL vừa copy vào trình duyệt rồi Enter.
+   Thấy dòng chữ `RSVP endpoint đang chạy.` là đúng.
+2. **Thử gửi thật:** mở trang cưới, điền form, bấm gửi. Mở Sheet ra xem — phải
+   có một dòng mới, kèm hàng tiêu đề tự sinh ở lần gửi đầu tiên.
+
+### 9.3. Các cột trong Sheet
+
+| Cột | Ý nghĩa |
+|---|---|
+| Thời điểm gửi | Lúc khách bấm nút (giờ trên máy khách) |
+| Họ và tên | Khách tự nhập |
+| Số điện thoại | Đã kiểm tra định dạng ở phía trang web |
+| Có tham dự | `Có` / `Không` |
+| Số khách | Số người đi cùng; `0` nếu không đến được |
+| Buổi tham dự | `vu-quy` / `tiec` / `ca-hai` |
+| Lời nhắn | Không bắt buộc |
+| Ngôn ngữ | Khách xem trang bằng `vi` hay `en` |
+| Thời điểm nhận | Lúc server ghi vào Sheet |
+
+Muốn đổi thứ tự cột hoặc bớt cột: sửa mảng `COLUMNS` ở đầu file
+[`docs/apps-script.gs`](docs/apps-script.gs), rồi **Triển khai → Quản lý các tập hợp
+triển khai → sửa (bút chì) → Phiên bản: Phiên bản mới → Triển khai**.
+
+> Lưu ý: mỗi lần sửa code Apps Script, phải triển khai **phiên bản mới** thì thay
+> đổi mới có tác dụng. URL giữ nguyên, không phải sửa lại `config.js`.
+
+### 9.4. Trang xử lý lỗi thế nào
+
+- Đang gửi: nút đổi thành **"Đang gửi…"** và khoá lại — bấm mấy lần cũng chỉ
+  gửi đúng một bản ghi.
+- Gửi xong mới hiện lời cảm ơn, nên khách không bao giờ tưởng nhầm là đã gửi
+  trong khi thật ra rớt mạng.
+- Gửi hỏng: hiện dòng báo lỗi màu đỏ dưới nút, mở khoá cho khách bấm gửi lại.
+  Chi tiết lỗi in ra Console để bạn xem.
+- Form có một ô ẩn **bẫy bot** (`website`). Người thật không nhìn thấy nên luôn
+  để trống; bot điền hết mọi ô nên bị lộ, trang sẽ bỏ qua không gửi.
+
+### 9.5. Nếu muốn dùng dịch vụ khác
+
+Cấu trúc dữ liệu gửi đi là JSON thuần, dịch vụ nào nhận POST cũng được. Chỉ cần
+đổi `endpoint` sang URL của họ. Ví dụ [Formspree](https://formspree.io) cài nhanh
+hơn nhưng bản miễn phí chỉ 50 lượt/tháng — thường không đủ cho một đám cưới.
 
 ---
 
@@ -482,6 +559,8 @@ Sau khi có link, gửi cho khách kèm ngôn ngữ mong muốn:
 weeding-ladingpage/
 ├── index.html                    Khung trang + các hình SVG vẽ tay + <template>
 ├── README.md                     File bạn đang đọc
+├── docs/
+│   └── apps-script.gs        ★   Code dán vào Google Apps Script để nhận RSVP
 └── assets/
     ├── css/styles.css            Toàn bộ giao diện. Màu sắc chỉ khai báo ở :root
     ├── js/
@@ -510,6 +589,7 @@ weeding-ladingpage/
 - Xem ảnh phóng to: phím mũi tên, Esc, vuốt ngang
 - Nhạc nền 4 bài, chọn bài tuỳ ý, chỉnh âm lượng
 - Form RSVP có kiểm tra dữ liệu, tự ẩn bớt ô khi khách chọn "không tham dự"
+- Gửi RSVP thẳng vào Google Sheet, có báo lỗi mạng, chống bấm trùng và bẫy bot (mục 9)
 - Sao chép số tài khoản 1 chạm (chạy cả khi mở bằng `file://`)
 - FAQ dạng accordion, nút cuộn lên đầu trang
 - Vệt trái tim bay theo con trỏ, đồng bộ màu với theme
@@ -518,5 +598,6 @@ weeding-ladingpage/
 
 ## 14. Những gì **chưa** làm
 
-- Chưa có backend nhận RSVP (xem mục 9)
 - Ảnh QR đang là khung minh hoạ — cần thay bằng ảnh QR thật của bạn
+- Ảnh xem trước khi chia sẻ link (Facebook/Zalo) chưa mang tên khách mời —
+  hai nền tảng này không chạy JavaScript khi quét link (xem mục 10)
